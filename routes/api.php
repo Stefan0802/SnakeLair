@@ -23,7 +23,7 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->middleware('auth:sanctum');
-Route::post('/profile/editor', [ProfileController::class, 'editorProfile'])->middleware('auth:sanctum');
+Route::put('/profile/editor', [ProfileController::class, 'editorProfile'])->middleware('auth:sanctum');
 Route::post('/profile/password', [ProfileController::class, 'editPassword'])->middleware('auth:sanctum');
 
 Route::get('/profile/{id?}', [ProfileController::class, 'profile'])->middleware('auth:sanctum');
@@ -32,4 +32,5 @@ Route::get('/friends', [FriendController::class, 'index'])->middleware('auth:san
 Route::post('/friends/add/{friendId}', [FriendController::class, 'addFriend'])->middleware('auth:sanctum');
 
 Route::get('/posts', [PostsController::class, 'posts'])->middleware('auth:sanctum');
+Route::post('/posts/create', [PostsController::class, 'createPost'])->middleware('auth:sanctum');
 

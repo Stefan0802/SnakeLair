@@ -15,31 +15,25 @@ class ProfileController extends Controller
 {
     public function profile(Request $request, $id = null)
     {
-        // Получаем аутентифицированного пользователя
+
         $loggedInUser   = $request->user();
 
-        // Проверяем, аутентифицирован ли пользователь
+
         if (!$loggedInUser ) {
             return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
         }
 
-        // Если ID не передан, используем ID аутентифицированного пользователя
+
         $userId = $id ?? $loggedInUser ->id;
 
-        // Получаем пользователя с его друзьями и постами
+
         $user = User::with(['friends', 'friendOf', 'post'])->find($userId);
 
-        // Проверяем, существует ли пользователь
+
         if ($user) {
             $response = [
                 'status' => 'success',
-                'user' => [
-                    'id' => $user->id,
-                    'firstName' => $user->firstName,
-                    'lastName' => $user->lastName,
-                    'email' => $user->email,
-                    'avatar' => url($user->avatar),
-                ],
+                'user' => $user,
                 'friends' => $user->friends,
                 'friendOf' => $user->friendOf,
                 'posts' => $user->post,

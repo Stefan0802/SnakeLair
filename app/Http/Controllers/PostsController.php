@@ -12,17 +12,59 @@ class PostsController extends Controller
     {
         $loggedInUser  = $request->user();
 
-        // Проверяем, аутентифицирован ли пользователь
+
         if (!$loggedInUser ) {
             return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
         }
 
-        // Получаем все посты
-        $posts = Post::with('user')->get(); // Загружаем посты с информацией о пользователе
+        $posts = Post::with('user')->get();
 
         return response()->json([
             'status' => 'success',
-            'posts' => $posts
+            'posts' => $posts,
+            'profileLink' => url("/profile/{$loggedInUser ->id}"),
         ], 200);
     }
+
+
+
+    public function createPost(Request $request)
+    {
+
+        $loggedInUser  = $request->user();
+
+
+        if (!$loggedInUser ) {
+            return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
+        }
+
+
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+        ]);
+
+
+        $post = Post::create([
+            'user_id' => $loggedInUser ->id,
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'photo' => $this->uploadImage($request),
+
+        ]);
+
+        return response()->json(['status' => 'success', 'post' => $post], 201);
+    }
+
+
+    private function uploadImage(Request $request)
+    {
+        if ($request->hasFile('photo')) {
+            $imagePath = $request->file('photo')->store('images/posts', 'public');
+            return $imagePath;
+        }
+        return null;
+    }
+
 }

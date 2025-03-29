@@ -18,7 +18,7 @@ class UserController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        // Создание пользователя
+
         $user = User::create([
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
@@ -42,10 +42,10 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
 
-        // Поиск пользователя по email
+
         $user = User::where('email', $request->email)->first();
 
-        // Проверка наличия пользователя и проверки пароля
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => 'failed',
@@ -53,10 +53,10 @@ class UserController extends Controller
             ], 401);
         }
 
-        // Создание токена
+
         $token = $user->createToken($request->email)->plainTextToken;
 
-        // Формирование ответа
+
         return response()->json([
             'status' => 'success',
             'message' => 'User  is logged in successfully.',
