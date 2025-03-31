@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -33,4 +34,11 @@ Route::post('/friends/add/{friendId}', [FriendController::class, 'addFriend'])->
 
 Route::get('/posts', [PostsController::class, 'posts'])->middleware('auth:sanctum');
 Route::post('/posts/create', [PostsController::class, 'createPost'])->middleware('auth:sanctum');
+Route::post('/posts/comments', [PostsController::class, 'addComment'])->middleware('auth:sanctum');
+Route::post('/posts/like-toggle/{id}', [PostsController::class, 'toggleLike'])->middleware('auth:sanctum');
+Route::delete('/posts/{id}', [PostsController::class, 'deletePost'])->middleware('auth:sanctum');
+Route::put('/posts/{id}', [PostsController::class, 'updatePost'])->middleware('auth:sanctum');
 
+
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->middleware('auth:sanctum');
+Route::get('/chat/{receiverId}/messages', [ChatController::class, 'getMessages'])->middleware('auth:sanctum');
