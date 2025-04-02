@@ -70,12 +70,23 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+
+        if (!$request->user()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User  is not authenticated'
+            ], 401);
+        }
+
+
+        $request->user()->tokens()->delete();
+
         return response()->json([
             'status' => 'success',
-            'message' => 'User is logged'
+            'message' => 'User is logged out'
         ], 200);
     }
+
 
 
 }

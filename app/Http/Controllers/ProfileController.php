@@ -34,9 +34,7 @@ class ProfileController extends Controller
             $response = [
                 'status' => 'success',
                 'user' => $user,
-                'friends' => $user->friends,
-                'friendOf' => $user->friendOf,
-                'posts' => $user->post,
+
             ];
             return response()->json($response, 200);
         }
