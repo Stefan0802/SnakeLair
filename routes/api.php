@@ -25,7 +25,7 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 
 Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->middleware('auth:sanctum');
 Route::put('/profile/editor', [ProfileController::class, 'editorProfile'])->middleware('auth:sanctum');
-Route::post('/profile/password', [ProfileController::class, 'editPassword'])->middleware('auth:sanctum');
+Route::put('/profile/password', [ProfileController::class, 'editPassword'])->middleware('auth:sanctum');
 
 Route::get('/profile/{id?}', [ProfileController::class, 'profile'])->middleware('auth:sanctum');
 
@@ -39,6 +39,6 @@ Route::post('/posts/like-toggle/{id}', [PostsController::class, 'toggleLike'])->
 Route::delete('/posts/{id}', [PostsController::class, 'deletePost'])->middleware('auth:sanctum');
 Route::put('/posts/{id}', [PostsController::class, 'updatePost'])->middleware('auth:sanctum');
 
-
+Route::get('/chat', [ChatController::class, 'chat'])->middleware('auth:sanctum');
 Route::post('/chat/send', [ChatController::class, 'sendMessage'])->middleware('auth:sanctum');
 Route::get('/chat/{receiverId}/messages', [ChatController::class, 'getMessages'])->middleware('auth:sanctum');

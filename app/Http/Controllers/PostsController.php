@@ -15,7 +15,7 @@ class PostsController extends Controller
         $loggedInUser  = $request->user();
 
         if (!$loggedInUser ) {
-            return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
         // Загружаем посты с пользователями, комментариями и лайками
@@ -31,6 +31,8 @@ class PostsController extends Controller
                 'title' => $post->title,
                 'description' => $post->description,
                 'photo' => $post->photo,
+                'created' => $post->created_at,
+                'update' => $post->created_at,
                 'user' => $post->user,
                 'comments' => $post->comment,
                 'likes_count' => $likesCount,
@@ -55,7 +57,7 @@ class PostsController extends Controller
 
 
         if (!$loggedInUser ) {
-            return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
 
@@ -119,7 +121,7 @@ class PostsController extends Controller
         if ($like) {
             // Если лайк уже существует, то убираем его
             $like->delete();
-            return response()->json(['status' => 'success', 'message' => 'Like removed'], 200);
+            return response()->json(['status' => 'success', 'message' => 'Лайк убран'], 200);
         } else {
             // Если лайка нет, то создаем новый
             $like = Likes::create([
@@ -136,25 +138,25 @@ class PostsController extends Controller
         $loggedInUser  = $request->user();
 
         if (!$loggedInUser ) {
-            return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
         // Находим пост по ID
         $post = Post::find($id);
 
         if (!$post) {
-            return response()->json(['status' => 'error', 'message' => 'Post not found'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Пост не найден'], 404);
         }
 
         // Проверяем, является ли пользователь владельцем поста или администратором
-        if ($post->user_id !== $loggedInUser ->id && !$loggedInUser ->isAdmin()) {
+        if ($post->user_id !== $loggedInUser ->id || !$loggedInUser ->isAdmin()) {
             return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
         }
 
         // Удаляем пост
         $post->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Post deleted successfully'], 200);
+        return response()->json(['status' => 'success', 'message' => 'Пост удален'], 200);
     }
 
 
@@ -163,18 +165,18 @@ class PostsController extends Controller
         $loggedInUser  = $request->user();
 
         if (!$loggedInUser ) {
-            return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
         // Находим пост по ID
         $post = Post::find($id);
 
         if (!$post) {
-            return response()->json(['status' => 'error', 'message' => 'Post not found'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Пост не найден'], 404);
         }
 
         // Проверяем, является ли пользователь владельцем поста или администратором
-        if ($post->user_id !== $loggedInUser ->id && !$loggedInUser ->isAdmin()) {
+        if ($post->user_id !== $loggedInUser ->id || !$loggedInUser ->isAdmin()) {
             return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
         }
 
@@ -190,11 +192,7 @@ class PostsController extends Controller
             'description' => $request->description,
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Post updated successfully', 'post' => $post], 200);
+        return response()->json(['status' => 'success', 'message' => 'Пост изменен', 'post' => $post], 200);
     }
-
-
-
-
 
 }

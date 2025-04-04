@@ -31,7 +31,7 @@ class UserController extends Controller
 
         $response = [
             'status' => 'success',
-            'message' => 'User  is created',
+            'message' => 'Пользователь создан',
             'data' => $data,
             'user' => $user
         ];
@@ -49,7 +49,7 @@ class UserController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Invalid credentials'
+                'message' => 'Неверные данные'
             ], 401);
         }
 
@@ -59,7 +59,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'User  is logged in successfully.',
+            'message' => 'Пользователь успешно авторизироавн',
             'data' => [
                 'token' => $token,
                 'user' => $user,
@@ -74,7 +74,7 @@ class UserController extends Controller
         if (!$request->user()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'User  is not authenticated'
+                'message' => 'Пользователь не авторизован'
             ], 401);
         }
 
@@ -83,7 +83,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'User is logged out'
+            'message' => 'Пользователь успешно вышел'
         ], 200);
     }
 

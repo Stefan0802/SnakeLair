@@ -20,7 +20,7 @@ class ProfileController extends Controller
 
 
         if (!$loggedInUser ) {
-            return response()->json(['status' => 'error', 'message' => 'User  not authenticated'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
 
@@ -39,7 +39,7 @@ class ProfileController extends Controller
             return response()->json($response, 200);
         }
 
-        return response()->json(['status' => 'error', 'message' => 'User  not found'], 404);
+        return response()->json(['status' => 'error', 'message' => 'Пользователь не найден'], 404);
     }
 
 
@@ -48,7 +48,7 @@ class ProfileController extends Controller
         $loggedInUser = Auth::user();
 
         if (!$loggedInUser) {
-            $response = ['status' => 'error', 'message' => 'User not authenticated'];
+            $response = ['status' => 'error', 'message' => 'Пользователь не авторизован'];
             return response()->json($response, 401);
         }
 
@@ -72,7 +72,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'password changed',
+            'message' => 'Пароль изменен',
             'user' => $user
         ]);
     }
@@ -83,7 +83,7 @@ class ProfileController extends Controller
         $loggedInUser = Auth::user();
 
         if (!$loggedInUser) {
-            $response = ['status' => 'error', 'message' => 'User not authenticated'];
+            $response = ['status' => 'error', 'message' => 'Пользователь не авторизован'];
             return response()->json($response, 401);
         }
 
@@ -114,7 +114,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'change succeeded',
+            'message' => 'Данные изменены',
             'user' => $user
         ], 200);
 
@@ -126,7 +126,7 @@ class ProfileController extends Controller
         $loggedInUser = Auth::user();
 
         if (!$loggedInUser) {
-            $response = ['status' => 'error', 'message' => 'User not authenticated'];
+            $response = ['status' => 'error', 'message' => 'Пользователь не авторизован'];
             return response()->json($response, 401);
         }
 
@@ -152,7 +152,7 @@ class ProfileController extends Controller
             }
         }
 
-        $response = ['status' => 'error', 'message' => 'User not found'];
+        $response = ['status' => 'error', 'message' => 'Пользователь не найден'];
         return response()->json($response, 404);
     }
 }
