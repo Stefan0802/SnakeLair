@@ -168,16 +168,14 @@ class PostsController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
-        // Находим пост по ID
         $post = Post::find($id);
 
         if (!$post) {
             return response()->json(['status' => 'error', 'message' => 'Пост не найден'], 404);
         }
 
-        // Проверяем, является ли пользователь владельцем поста или администратором
-        if ($post->user_id !== $loggedInUser ->id || !$loggedInUser ->isAdmin()) {
-            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        if ($post->user_id !== $loggedInUser ->id) {
+            return response()->json(['status' => 'error', 'message' => 'это не ваш пост'], 403);
         }
 
         // Валидация данных

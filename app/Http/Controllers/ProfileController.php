@@ -97,17 +97,8 @@ class ProfileController extends Controller
                 'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
             ]);
 
-            if ($validated){
-                if ($request->has('firstName')) {
-                    $user->firstName = $request->firstName;
-                }
-                if ($request->has('lastName')) {
-                    $user->lastName = $request->lastName;
-                }
-                if ($request->has('email')) {
-                    $user->email = $request->email;
-                }
-            }
+
+
         }
 
         $user->save();

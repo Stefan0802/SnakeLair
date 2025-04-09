@@ -50,18 +50,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function isAdmin()
     {
-        if(Auth::user()->role == 1){
+        if (Auth::user()->role == 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
     public function comment()
     {
         return $this->hasMany(Comment::class);
     }
+
     public function post()
     {
         return $this->hasMany(Post::class);
@@ -77,6 +80,8 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'receiver_id');
     }
 
+
+    //Переделать
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
@@ -85,10 +90,7 @@ class User extends Authenticatable
     public function friendOf()
     {
         return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id');
-    }
 
-    public function allFriends()
-    {
-        return $this->friends()->union($this->friendOf());
     }
 }
+
