@@ -47,5 +47,7 @@ Route::get('/chat/{receiverId}/messages', [ChatController::class, 'getMessages']
 Route::get('admin/posts', [AdminController::class, 'posts'])->middleware('auth:sanctum');
 Route::delete('admin/posts/{id}', [AdminController::class, 'postDel'])->middleware('auth:sanctum');
 Route::put('admin/posts/{id}', [AdminController::class, 'editPost'])->middleware('auth:sanctum');
+
 Route::get('admin/users', [AdminController::class, 'getUsers'])->middleware('auth:sanctum');
 Route::put( 'admin/users/{id}', [AdminController::class, 'editUser'])->middleware('auth:sanctum');
+Route::delete( 'admin/users/{id}', [AdminController::class, 'delUser'])->middleware( 'auth:sanctum');

@@ -125,7 +125,7 @@ class AdminController extends Controller
     {
         $loggedInUser  = $request->user();
 
-        if (!$loggedInUser ) {
+        if (!$loggedInUser) {
             return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
@@ -163,6 +163,28 @@ class AdminController extends Controller
             'message' => 'Данные изменены',
             'user' => $user
         ], 200);
+    }
+
+    public function delUser(Request $request, $id)
+    {
+        $loggedInUser  = $request->user();
+
+        if (!$loggedInUser) {
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
+        }
+
+        if (!$loggedInUser ->isAdmin()) {
+            return response()->json(['status' => 'access denied', 'message' => 'Недостаточно прав'], 403);
+        }
+
+        $user = User::find($id);
+
+        $user -> delete();
+
+        return response()->json([
+            'status'=>'success',
+            'message'=>'пользователь удален'
+        ]);
     }
 
 
