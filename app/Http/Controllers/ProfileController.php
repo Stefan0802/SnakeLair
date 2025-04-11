@@ -15,32 +15,35 @@ class ProfileController extends Controller
 {
     public function profile(Request $request, $id = null)
     {
-
-        $loggedInUser   = $request->user();
-
+        $loggedInUser  = $request->user();
 
         if (!$loggedInUser ) {
             return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
-
         $userId = $id ?? $loggedInUser ->id;
 
-
-        $user = User::with(['friends', 'friendOf', 'post'])->find($userId);
-
+        // Убедитесь, что вы загружаете правильные отношения
+        $user = User::with(['sentFriend', 'receivedFriend', 'post'])->find($userId);
 
         if ($user) {
+
+
             $response = [
                 'status' => 'success',
                 'user' => $user,
-
             ];
             return response()->json($response, 200);
         }
 
         return response()->json(['status' => 'error', 'message' => 'Пользователь не найден'], 404);
     }
+
+
+
+
+
+
 
 
     public function editPassword(Request $request)
