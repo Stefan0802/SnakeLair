@@ -64,7 +64,7 @@ class ChatController extends Controller
                 return [
                     'user' => [
                         'id' => $otherUser->id,
-                        'name' => $otherUser->firstName, // Используем username вместо name
+                        'name' => $otherUser->firstName,
                     ],
                     'last_message' => [
                         'text' => $chat->message,

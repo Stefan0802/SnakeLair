@@ -92,17 +92,7 @@ class ProfileController extends Controller
 
         $user = User::where('email', $loggedInUser->email)->first();
 
-        if ($user){
 
-            $validated = $request->validate([
-                'firstName' => 'sometimes|required|string|max:255',
-                'lastName' => 'sometimes|required|string|max:255',
-                'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
-            ]);
-
-
-
-        }
 
         $user->save();
 

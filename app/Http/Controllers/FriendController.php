@@ -15,18 +15,17 @@ class FriendController extends Controller
 
         $users = User::where('id', '!=', Auth::id())->get();
 
-        $userProfileLinks = $users->map(function ($user) {
+        $users = $users->map(function ($user) {
             return [
                 'id' => $user->id,
                 'firstName' => $user->firstName,
                 'lastName' => $user->lastName,
                 'avatar' => $user->avatar,
-                'profileLink' => url("/profile/{$user->id}"),
             ];
         });
 
         return response()->json([
-            'users' => $userProfileLinks,
+            'users' => $users,
         ]);
     }
 
@@ -58,6 +57,26 @@ class FriendController extends Controller
         ]);
 
         return response()->json(['status' => 'success', 'message' => 'Друг добавлен!'], 201);
+    }
+
+    public function removeFriend(Request $request, $friendId)
+    {
+        $loggedInUser  = $request->user();
+
+        if (!$loggedInUser ) {
+            return response()->json(['status' => 'error', 'message' => 'Пользователь не аутентифицирован'], 401);
+        }
+
+        // Проверяем, существует ли друг
+        $friend = Friend::where('user_id', $loggedInUser ->id)->where('friend_id', $friendId)->first();
+        if (!$friend) {
+            return response()->json(['status' => 'error', 'message' => 'Друг не найден'], 404);
+        }
+
+        // Удаляем друга
+        $friend->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Друг удалён!'], 200);
     }
 
 }

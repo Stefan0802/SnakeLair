@@ -32,6 +32,7 @@ Route::get('/profile/{id?}', [ProfileController::class, 'profile'])->middleware(
 
 Route::get('/friends', [FriendController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/friends/add/{friendId}', [FriendController::class, 'addFriend'])->middleware('auth:sanctum');
+Route::delete('/friends/del/{friendId}', [FriendController::class, 'removeFriend'])->middleware('auth:sanctum');
 
 Route::get('/posts', [PostsController::class, 'posts'])->middleware('auth:sanctum');
 Route::post('/posts/create', [PostsController::class, 'createPost'])->middleware('auth:sanctum');
