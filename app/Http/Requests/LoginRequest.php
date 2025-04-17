@@ -15,16 +15,16 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required ', 'email'],
-            'password' => ['required ', 'string', 'min:6']
+            'email' => 'required|email',
+            'password' => 'required|string|min:6'
         ];
     }
 
     public function messages()
     {
         return [
-          'email.request' => 'Поле обязательно для заполнения',
-          'password.request' => 'Введите пароль содержащий минимум 6 символов'
+          'email.request' => 'Неверная почта',
+          'password.request' => 'Неверный пароль'
         ];
     }
 }

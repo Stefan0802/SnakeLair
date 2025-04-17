@@ -7,7 +7,9 @@ use App\Models\Post;
 use App\Models\Comment;
 use http\Env\Response;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\EditPostRequest;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\AddCommentRequest;
 class PostsController extends Controller
 {
     public function posts(Request $request)
@@ -50,34 +52,24 @@ class PostsController extends Controller
 
 
 
-    public function createPost(Request $request)
+    public function createPost(CreatePostRequest $request)
     {
-
         $loggedInUser  = $request->user();
-
 
         if (!$loggedInUser ) {
             return response()->json(['status' => 'error', 'message' => 'Пользователь не авторизован'], 401);
         }
 
-
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-        ]);
-
-
         $post = Post::create([
             'user_id' => $loggedInUser ->id,
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
+            'title' => $request->validated()['title'],
+            'description' => $request->validated()['description'],
             'photo' => $this->uploadImage($request),
-
         ]);
 
         return response()->json(['status' => 'success', 'post' => $post], 201);
     }
+
 
 
     private function uploadImage(Request $request)
@@ -89,16 +81,12 @@ class PostsController extends Controller
         return null;
     }
 
-    public function addComment(Request $request)
+    public function addComment(AddCommentRequest $request, $id)
     {
-        $request->validate([
-            'post_id' => 'required|exists:posts,id',
-            'comment' => 'required|string|max:255',
-        ]);
 
         $comment = Comment::create([
             'user_id' => $request->user()->id,
-            'post_id' => $request->post_id,
+            'post_id' => $id,
             'comment' => $request->comment,
         ]);
 
@@ -160,7 +148,7 @@ class PostsController extends Controller
     }
 
 
-    public function updatePost(Request $request, $id)
+    public function updatePost(EditPostRequest $request, $id)
     {
         $loggedInUser  = $request->user();
 
@@ -177,12 +165,6 @@ class PostsController extends Controller
         if ($post->user_id !== $loggedInUser ->id) {
             return response()->json(['status' => 'error', 'message' => 'это не ваш пост'], 403);
         }
-
-        // Валидация данных
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
 
         // Обновляем пост
         $post->update([

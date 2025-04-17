@@ -6,38 +6,33 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|unique:users,email|email|max:255',
-            'password' => 'required|min:6'
-        ]);
-
+        $validated = $request->validated();
 
         $user = User::create([
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password'])
+            'password' => Hash::make($validated['password']),
         ]);
 
         $data['token'] = $user->createToken($user->email)->plainTextToken;
-
 
         $response = [
             'status' => 'success',
             'message' => 'Пользователь создан',
             'data' => $data,
-            'user' => $user
+            'user' => $user,
         ];
 
         return response()->json($response, 201);
     }
+
 
     public function login(LoginRequest $request)
     {

@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Requests\EditPasswordRequest;
+use App\Http\Requests\UpdAvatarRequest;
+use App\Http\Requests\EditUserRequest;
 
 class ProfileController extends Controller
 {
@@ -46,7 +48,7 @@ class ProfileController extends Controller
 
 
 
-    public function editPassword(Request $request)
+    public function editPassword(EditPasswordRequest $request)
     {
         $loggedInUser = Auth::user();
 
@@ -59,16 +61,10 @@ class ProfileController extends Controller
 
         if ($user) {
 
-            $validated = $request->validate([
-                'password' => 'required|string|max:255',
-                'confPassword' => 'required|string|max:255|same:password'
-            ]);
-
-            if ($validated){
                 if ($request->has('password')) {
                     $user->password = Hash::make($request->password);
                 }
-            }
+
         }
 
         $user->save();
@@ -80,7 +76,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function editorProfile(Request $request)
+    public function editorProfile(EditUserRequest $request)
     {
 
         $loggedInUser = Auth::user();
@@ -91,8 +87,6 @@ class ProfileController extends Controller
         }
 
         $user = User::where('email', $loggedInUser->email)->first();
-
-
 
         $user->save();
 
@@ -105,7 +99,7 @@ class ProfileController extends Controller
     }
 
 
-    public function uploadAvatar(Request $request)
+    public function uploadAvatar(UpdAvatarRequest $request)
     {
         $loggedInUser = Auth::user();
 
@@ -118,11 +112,6 @@ class ProfileController extends Controller
 
         if ($user) {
 
-            $validated = $request->validate([
-                'avatar' => 'required|image|mimes:jpeg,png,jpg,gif',
-            ]);
-
-            if ($validated) {
 
                 $avatar = time() . '.' . $request->avatar->getClientOriginalExtension();
 
@@ -133,7 +122,7 @@ class ProfileController extends Controller
                 $response = ['status' => 'success'];
 
                 return response()->json($response, 200);
-            }
+
         }
 
         $response = ['status' => 'error', 'message' => 'Пользователь не найден'];

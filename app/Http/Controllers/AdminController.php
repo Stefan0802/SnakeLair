@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\EditAdminUserRequest;
+use App\Http\Requests\EditAdminPostRequest;
+
 
 class AdminController extends Controller
 {
@@ -56,7 +59,7 @@ class AdminController extends Controller
         }
     }
 
-    public function editPost(Request $request, $id)
+    public function editPost(EditAdminPostRequest $request, $id)
     {
         $loggedInUser  = $request->user();
 
@@ -74,11 +77,6 @@ class AdminController extends Controller
             return response()->json(['status' => 'access denied', 'message' => 'Недостаточно прав'], 403);
         }
 
-        // Валидация данных
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
 
         // Обновляем пост
         $post->update([
@@ -121,7 +119,7 @@ class AdminController extends Controller
         ], 200);
     }
 
-    public function editUser(Request $request, $id)
+    public function editUser(EditAdminUserRequest $request, $id)
     {
         $loggedInUser  = $request->user();
 
@@ -135,27 +133,21 @@ class AdminController extends Controller
 
         $user = User::find($id);
 
-        $validated = $request->validate([
-            'firstName' => 'sometimes|required|string|max:255',
-            'lastName' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,',
-            'role' => 'sometimes|required'
-        ]);
 
-        if ($validated){
-            if ($request->has('firstName')) {
-                $user->firstName = $request->firstName;
-            }
-            if ($request->has('lastName')) {
-                $user->lastName = $request->lastName;
-            }
-            if ($request->has('email')) {
-                $user->email = $request->email;
-            }
-            if ($request->has('role')) {
-                $user->role = $request->role;
-            }
+
+        if ($request->has('firstName')) {
+            $user->firstName = $request->firstName;
         }
+        if ($request->has('lastName')) {
+            $user->lastName = $request->lastName;
+        }
+        if ($request->has('email')) {
+            $user->email = $request->email;
+        }
+        if ($request->has('role')) {
+            $user->role = $request->role;
+        }
+
         $user->save();
 
         return response()->json([

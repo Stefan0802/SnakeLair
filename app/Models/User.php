@@ -26,17 +26,8 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
 
     public function isAdmin()
     {
@@ -67,11 +58,6 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'receiver_id');
     }
 
-
-    //Переделать
-
-
-
     public function sentFriend()
     {
         return $this->hasMany(Friend::class, 'user_id');
@@ -81,14 +67,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Friend::class, 'friend_id');
     }
-
-//    public function friends()
-//    {
-//        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
-//    }
-
-
-
-
 }
 
