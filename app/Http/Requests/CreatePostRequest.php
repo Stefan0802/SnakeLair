@@ -31,7 +31,10 @@ class CreatePostRequest extends FormRequest
     {
         return [
             'title.required' => 'Заголовок обязателен.',
+            'title.string' => 'Заголовок должен быть строчкой',
+            'title.max' => 'Заголовок слишком большой',
             'description.required' => 'Описание обязательно.',
+            'description.string' => 'Описание должно быть строчкой',
             'photo.image' => 'Файл должен быть изображением.',
             'photo.mimes' => 'Поддерживаются только форматы: jpeg, png, jpg, gif.',
         ];

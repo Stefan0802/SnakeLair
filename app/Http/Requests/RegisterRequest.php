@@ -32,13 +32,17 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'firstName.required' => 'Имя обязательно.',
-            'lastName.required' => 'Фамилия обязательна.',
-            'email.required' => 'Email обязателен.',
-            'email.unique' => 'Этот email уже используется.',
-            'email.email' => 'Некорректный email.',
-            'password.required' => 'Пароль обязателен.',
-            'password.min' => 'Пароль должен содержать минимум 6 символов.',
+            'firstName.required' => 'Имя обязательно',
+            'firstName.string' => 'Имя должно быть строчкой',
+            'firstName.max' => 'Имя слишком большое',
+            'lastName.required' => 'Фамилия обязательна',
+            'lastName.string' => 'Фамилия должна быть строкой',
+            'lastName.max' => 'Фамилия слишком большая',
+            'email.required' => 'Почта обязательна',
+            'email.unique' => 'Эта почта уже используется',
+            'email.email' => 'Некорректная почта',
+            'password.required' => 'Пароль обязателен',
+            'password.min' => 'Пароль должен содержать минимум 6 символов',
         ];
     }
 }

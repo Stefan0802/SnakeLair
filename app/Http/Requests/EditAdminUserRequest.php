@@ -31,10 +31,17 @@ class EditAdminUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'firstName.required' => 'Имя обязательно для заполнения.',
-            'lastName.required' => 'Фамилия обязательна для заполнения.',
-            'email.required' => 'Email обязателен для заполнения.',
-            'role.required' => 'Роль обязательна для заполнения.',
+            'firstName.required' => 'Имя обязательно для заполнения',
+            'firstName.string' => 'Имя должно быть строчкой',
+            'firstName.max' => 'Имя слишком большое',
+            'lastName.required' => 'Фамилия обязательна для заполнения',
+            'lastName.string' => 'Фамилия должна быть строчкой',
+            'lastName.max' => 'Фамилия слишком большая',
+            'email.required' => 'Почта обязателен для заполнения',
+            'email.string' => 'Почта должна быть строкой',
+            'email.email' => 'Поле должно быть почтой',
+            'email.max' => 'Почта слишком большая',
+            'role.required' => 'Роль обязательна для заполнения',
         ];
     }
 }

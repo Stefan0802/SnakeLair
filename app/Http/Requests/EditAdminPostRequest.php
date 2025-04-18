@@ -29,8 +29,11 @@ class EditAdminPostRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.request' => 'Загаловок обязателен для заполнения',
-            'description.request' => 'Описание обязательно для заполнения'
+            'title.required' => 'Загаловок обязателен для заполнения',
+            'title.string' => 'Загаловок должен быть строчкой',
+            'title.max' => 'Загаловок слишком большой',
+            'description.required' => 'Описание обязательно для заполнения',
+            'description.string' => 'Описание должно быть строчкой'
         ];
     }
 }

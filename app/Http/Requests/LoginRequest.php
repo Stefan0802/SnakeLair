@@ -23,8 +23,9 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-          'email.request' => 'Неверная почта',
-          'password.request' => 'Неверный пароль'
+            'email.request' => 'Неверная почта',
+            'email.email' => 'Логин должен быть почтой',
+            'password.request' => 'Неверный пароль',
         ];
     }
 }

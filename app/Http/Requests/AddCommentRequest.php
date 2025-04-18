@@ -31,6 +31,7 @@ class AddCommentRequest extends FormRequest
         return[
             'comment.required' => 'Комментарий должен обязательно должен быть',
             'comment.string' => 'Комментарий может быть только строчкой',
+            'comment.max' => 'Комментарий слишком большой',
         ];
     }
 }

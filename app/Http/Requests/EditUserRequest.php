@@ -30,10 +30,17 @@ class EditUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'firstName.required' => 'Имя обязательно для заполнения.',
-            'lastName.required' => 'Фамилия обязательна для заполнения.',
-            'email.required' => 'Email обязателен для заполнения.',
-            'email.unique' => 'Почта должна быть уникальной'
+            'firstName.required' => 'Имя обязательно для заполнения',
+            'firstName.string' => 'Имя должно быть строчкой',
+            'firstName.max' => 'Имя слишком большое',
+            'lastName.required' => 'Фамилия обязательна для заполнения',
+            'lastName.string' => 'Фамилия должна быть строкой',
+            'lastName.max' => 'Фамилия слишком большая',
+            'email.required' => 'Почта обязательна для заполнения',
+            'email.string' => 'Почта должна быть строкой',
+            'email.email' => 'Почта неверна',
+            'email.max' => 'Почта слишком большая',
+            'email.unique' => 'Эта почта уже занята'
         ];
     }
 }

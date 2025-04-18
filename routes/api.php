@@ -37,6 +37,8 @@ Route::delete('/friends/del/{friendId}', [FriendController::class, 'removeFriend
 Route::get('/posts', [PostsController::class, 'posts'])->middleware('auth:sanctum');
 Route::post('/posts/create', [PostsController::class, 'createPost'])->middleware('auth:sanctum');
 Route::post('/posts/comments/{id}', [PostsController::class, 'addComment'])->middleware('auth:sanctum');
+Route::put( '/posts/comments/edit/{id}', [PostsController::class, 'editComment'])->middleware('auth:sanctum');
+Route::delete('/posts/comments/del/{id}', [PostsController::class, 'delComment'])->middleware('auth:sanctum');
 Route::post('/posts/like-toggle/{id}', [PostsController::class, 'toggleLike'])->middleware('auth:sanctum');
 Route::delete('/posts/{id}', [PostsController::class, 'deletePost'])->middleware('auth:sanctum');
 Route::put('/posts/{id}', [PostsController::class, 'updatePost'])->middleware('auth:sanctum');
