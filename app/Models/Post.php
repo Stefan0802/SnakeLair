@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use http\Env\Response;
-
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -78,24 +78,43 @@ class Post extends Model
             'user_id' => $loggedInUser ->id,
             'title' => $request->validated()['title'],
             'description' => $request->validated()['description'],
-            'photo' => self::uploadImage($request),
         ]);
+
+        // Загружаем изображение и обновляем пост
+        $imageResponse = self::uploadImage($request);
+        if ($imageResponse->getStatusCode() === 200) {
+            $post->photo = json_decode($imageResponse->getContent())->photo; // Получаем путь к изображению
+            $post->save();
+        }
 
         return response()->json(['status' => 'success', 'post' => $post], 201);
     }
 
-    public static function uploadImage(Request $request)
+    public static function uploadImage($request): JsonResponse
     {
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $path = $file->store('photos', 'public'); // Сохранение в папку public/photos
-            return $path;
+        $loggedInUser  = Auth::user();
+
+        // Получаем пост, если он существует
+        $post = Post::where('user_id', $loggedInUser ->id)->latest()->first(); // Или используйте другой способ получения поста
+
+        if ($post) {
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
+                $filename = time() . '.' . $file->getClientOriginalExtension(); // Генерация уникального имени файла
+                $file->move(public_path('uploads/images'), $filename); // Перемещение файла в папку
+
+                // Обновляем поле photo в посте
+                $post->photo = 'uploads/images/' . $filename;
+                $post->save();
+
+                $response = ['status' => 'success', 'photo' => $post->photo];
+                return response()->json($response, 200);
+            }
         }
-        return null;
+
+        $response = ['status' => 'error', 'message' => 'Пост не найден или файл не загружен'];
+        return response()->json($response, 404);
     }
-
-
-
 
 
     public static function deletePost($request, $id): JsonResponse

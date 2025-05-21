@@ -117,6 +117,7 @@ class User extends Authenticatable
                 'user' => $user,
             ],
         ], 200);
+        exit();
     }
 
     // Метод для выхода
